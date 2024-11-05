@@ -1,0 +1,68 @@
+/************************************ MODAL ERROR ************************************/
+
+button.btn-modal-error {
+  display: none;
+}
+
+div.modal-error {
+  font-family: Ubuntu, Poppins;
+  font-size: 14px;
+  z-index: 50000000;
+}
+
+div.modal-error div.modal-content {
+  border-radius: 7px;
+  width: 447px;
+  margin: auto;
+}
+
+div.modal-error div.error-header {
+  background-color: #fff;
+  text-align: center;
+  justify-content: center;
+}
+
+div.modal-error div.error-header div img {
+  width: 64px;
+}
+
+div.modal-error div.modal-body {
+  font-size: 13px;
+  line-height: 20px;
+  color: #fff;
+  background-color: #00aeef;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+div.modal-error div.modal-body h6 {
+  font-size: 25px;
+  line-height: 21px;
+  font-weight: bold;
+}
+
+div.modal-error div.modal-body p {
+  font-size: 16px;
+  line-height: 16.8px;
+  font-weight: bold;
+}
+
+div.modal-error div.modal-body button.btn-close {
+  background-color: #fff !important;
+  border-color: #fff !important;
+  color: #00aeef;
+  border-radius: 25px;
+  padding: 5px 20px;
+  outline: 0px;
+  font-family: Ubuntu, Poppins;
+  font-size: 14px;
+  line-height: 21px;
+  width: 90%;
+  height: 20px;
+  margin: 8px 0px 0px 5px;
+}
+.btn-close {
+  opacity: 1 !important;
+  --bs-btn-close-bg: "" !important;
+  background : none !important;
+}

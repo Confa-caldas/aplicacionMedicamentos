@@ -1,0 +1,79 @@
+.container-fluid {
+  background: linear-gradient(135deg, #e0f7fa);
+  color: #333;
+  font-family: 'Ubuntu', 'Poppins', sans-serif;
+}
+
+h2.text-primary {
+  color: #0288d1;
+  font-weight: 700;
+}
+
+.webcam-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.webcam-frame {
+  border: 4px solid #fff;
+  border-radius: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(2, 136, 209, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(2, 136, 209, 0); }
+}
+
+.alert-danger {
+  background-color: #ffcdd2;
+  color: #b71c1c;
+  border: none;
+  border-radius: 8px;
+}
+
+.form-login {
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.custom-btn {
+  font-size: 1.1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #0288d1;
+  border-color: #0288d1;
+}
+
+.btn-primary:hover {
+  background-color: #0277bd;
+  box-shadow: 0 4px 8px rgba(2, 136, 209, 0.3);
+}
+
+.btn-outline-secondary {
+  color: #455a64;
+  border-color: #455a64;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #455a64;
+  color: #fff;
+}
+
+.policies {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #546e7a;
+}
+
+@media (min-width: 500px) and (max-width: 850px) {
+  .webcam-container{
+    padding-left: 10px;
+  }
+}

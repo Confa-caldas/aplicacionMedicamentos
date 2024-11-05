@@ -1,0 +1,283 @@
+@media (max-width: 768px) {
+  h2 {
+      font-size: 1.25rem;
+  }
+  .custom-btn {
+      width: 100%;
+      margin-bottom: 1rem;
+  }
+  .container {
+      padding: 0.5rem;
+  }
+}
+
+.container {
+  padding: 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-size: 1rem;
+}
+
+input, button {
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.custom-btn {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .custom-btn {
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-btn {
+      font-size: 12px;
+  }
+}
+
+
+
+.btn:disabled {
+  background-color: gray;
+  opacity: 0.7;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+fa-icon {
+  margin-right: 5px;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.custom-btn {
+  background-color: #0277BD;
+  color: white;
+  transition: background-color 0.3s ease;
+  border-radius: 5% !important;
+}
+
+.custom-btn:hover {
+  background-color: #007bbf;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 175, 235, 0.1);
+}
+
+.form-control{
+  color: gray;
+}
+
+.accordion-header {
+  background-color: #0277BD; 
+  color: white; 
+  padding: 7px 0.3vh 7px 0.3vh;
+  border-radius: 5%;
+  width: 100%;
+  justify-content: space-between ; 
+}
+
+.accordion-button {
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 5%;
+}
+
+.accordion-button:focus {
+  box-shadow: none;
+}
+
+.accordion-header .btn-link {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.accordion-header .btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Eliminar la flecha de desplegar */
+.accordion-button::after {
+  display: none;
+}
+
+/* Asegurarse de que el botón del acordeón ocupe todo el espacio */
+.accordion-button {
+  padding-right: 0; /* Elimina el espacio donde estaba la flecha */
+}
+
+/* Asegurarse de que el título del acordeón se vea alineado */
+.accordion-header {
+  padding-right: 1rem; /* Ajusta si es necesario para compensar la eliminación de la flecha */
+}
+
+.accordion-insumos {
+  background-color: rgb(250, 136, 136); 
+  color: black; 
+  padding: 0.3vh ;
+  border-radius: 5%;
+  border-color: #0277BD;
+}
+
+.accordion-insumos-button {
+  background-color: transparent;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 5%;
+  width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+  text-align: left; /* Alinea el texto a la izquierda */
+  padding: 0.75rem 1rem; /* Añade padding para hacer el botón más grande y fácil de hacer clic */
+}
+
+.accordion-adicionales {
+  background-color: #f1d28f; 
+  color: black; 
+  padding: 0.3vh;
+  border-radius: 5%;
+}
+
+.accordion-adicionales-button {
+  background-color: transparent;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 5%;
+  width: 100%; /* Hace que el botón ocupe todo el ancho disponible */
+  text-align: left; /* Alinea el texto a la izquierda */
+  padding: 0.75rem 1rem; /* Añade padding para hacer el botón más grande y fácil de hacer clic */
+}
+
+.aplicar-btn {
+  background-color: #ee6772;
+  color: white;
+  transition: background-color 0.3s ease;
+  border-radius: 5% !important;
+}
+
+.aplicar-btn:hover {
+  background-color: #f54352;
+}
+
+.detalles-btn {
+  background-color: #f1d789;
+  color: black;
+  transition: background-color 0.3s ease;
+  border-radius: 5% !important;
+}
+
+.detalles-btn:hover {
+  background-color: #FFC107;
+}
+
+.accordion-interno-btn {
+  background-color: #f1d789;
+  color: black;
+  transition: background-color 0.3s ease;
+  border-radius: 5% !important;
+}
+
+.accordion-interno-btn:hover {
+  background-color: #FFC107;
+}
+
+.guardar-btn {
+  background-color: #03a9f4;
+  color: white;
+  transition: background-color 0.3s ease;
+  border-radius: 5% !important;
+}
+
+.guardar-btn:hover {
+  background-color: #1baff3;
+}
+
+.nombre-campo {
+  font-weight: bold;
+  color: #000; 
+}
+
+.valor-dato {
+  font-style: italic;
+  color: gray; 
+}
+
+@media (min-width: 500px) and (max-width: 850px) {
+  .accordion-header {
+      max-width: 100%;
+      text-wrap: wrap;
+      justify-content: space-around ;
+  }
+  .accordion-header .accordion-button{
+    max-width: 60%;
+  }
+  .accordion-insumos {
+    padding-left: 55px;
+  }
+  .accordion-adicionales{
+    padding-left: 55px;
+  }
+}
+
+/* Desenfoca el fondo cuando el modal está abierto */
+.modal-backdrop.show {
+  backdrop-filter: blur(10px) !important; /* Ajusta el nivel de desenfoque según sea necesario */
+  background-color: rgba(0, 0, 0, 0.5) !important; /* Puedes ajustar la transparencia del fondo */
+}
+
+#modalMedicamentos .modal-dialog {
+  max-width: 95vw; /* Ajusta el ancho según tus necesidades */
+}
+
+.table td {
+  max-width: 18vw; /* Limita el ancho de la celda */
+  white-space: normal; /* Permite el salto de línea */
+  overflow-wrap: break-word; /* Permite que las palabras se dividan */
+}
+
+.cell-text {
+  display: block; /* Asegura que se aplique el estilo a todo el contenido */
+  max-width: 18vw; /* Limita el ancho de la celda */
+  white-space: normal; /* Permite el salto de línea */
+  overflow-wrap: break-word; /* Divide palabras largas si es necesario */
+}
+
+
+
+
+
+
+

@@ -1,0 +1,717 @@
+<div class="container-sistema my-3">
+    <h2 class="titulo-sistema" style="color: #03A9F4; text-align: center; ">
+        <span class="icon-computadora"></span> APLICACIÓN DE MEDICAMENTOS
+    </h2>
+</div>
+<div class="container">
+    <div class="row ">
+        <div class="mb-3 my-1">
+            <label for="exampleFormControlInput1" class="form-label" style="color: black !important;">Escanea el codigo
+                QR que aparece en la manilla del
+                paciente</label>
+            <input [(ngModel)]="inputValue" (change)="activarScanner()" autofocus type="text" id="input"
+                class="form-control  my-2" style="color: gray !important;"
+                placeholder="Ingresa el documento en caso de ser manual" required>
+        </div>
+    </div>
+    <div class="row ">
+        <button *ngIf="mostrarCargarSAB == true" class="btn guardar-btn btn-sm" (click)="cargarSAB()">Cargar SAB</button>
+        <select *ngIf="mostrarSelectSAB == true" [(ngModel)]="selectedSab" (change)="onSabChange()" class="form-select form-select-sm mt-3">
+            <option *ngFor="let option of sabOptions" [value]="option.sab">{{ option.descripcionSab }}</option>
+        </select>     
+        <h2 class="titulo-sistema" style="color: #ecc46d; margin: 3vw;" *ngIf="noDatosSab === true">
+            <span class="icon-computadora"></span>No hay admisiones para el SAB seleccionado
+        </h2>
+        <div class="table-responsive">
+            <table *ngIf="datosSabBoolean === true" class="table table-hover table-striped" id="tablaDatoSab">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Nombre</th>
+                        <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Identifación</th>
+                        <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Cama</th>
+                        <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Medicamentos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="datosSab.length === 0">
+                        <td colspan="5">
+                            <h2 class="titulo-sistema text-center" style="color: #ecc46d;">
+                                <span class="icon-computadora"></span>No hay admisiones
+                            </h2>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let datos of datosSab">
+                        <td class="text-secondary text-nowrap" style="background-color: white; color: black;">
+                            <span class="cell-text">
+                                {{  datos.pacienteNombre }}
+                            </span>
+                        </td>
+                        <td class="text-secondary text-nowrap">{{ datos.pacienteIdentificacion }}</td>
+                        <td class="text-secondary text-nowrap">{{ datos.habCama }}</td>                                  
+                        <td class="text-secondary text-nowrap text-center align-middle">
+                            <button class="btn guardar-btn btn-sm" (click)="verMedicamentos(datos.pacienteIdentificacion)">Ver</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" *ngIf="mostrarMensaje">
+        <div class="alert alert-danger" role="alert">
+            alerta! --- completar
+        </div>
+    </div>
+
+
+    <div class="accordion accordion-flush" id="accordionFlushExample" *ngIf="mostrarDatosBasicos">
+        <div class="accordion" id="nestedAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-adicionales">
+                    <button class="accordion-adicionales-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <fa-icon [icon]="faUserEdit"></fa-icon>
+                        Datos personales del paciente / {{nombre}}
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="nombrePaciente" class="form-label">Nombre Paciente</label>
+                                    <input type="text" class="form-control" id="nombrePaciente" [(ngModel)]="nombre"
+                                        name="nombre" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="tipoNumeroDocumento" class="form-label">Tipo y Número de Documento</label>
+                                    <input type="text" class="form-control" id="tipoNumeroDocumento"
+                                        [(ngModel)]="tipoNumeroDocumento" name="tipoNumeroDocumento" readonly>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="fechaNacimiento"
+                                        [(ngModel)]="fechaNacimiento" name="fechaNacimiento" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="cama" class="form-label">Cama</label>
+                                    <input type="text" class="form-control" id="cama" [(ngModel)]="cama" name="cama"
+                                        readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="sexo" class="form-label">Sexo</label>
+                                    <input type="text" class="form-control" id="sexo" [(ngModel)]="sexo" name="sexo"
+                                        readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="convenio" class="form-label">Convenio</label>
+                                    <input type="text" class="form-control" id="convenio" [(ngModel)]="convenio"
+                                        name="convenio" readonly>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="plan" class="form-label">Plan</label>
+                                    <input type="text" class="form-control" id="plan" [(ngModel)]="plan" name="plan"
+                                        readonly>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <h2 class="titulo-sistema" style="color: #ecc46d; " *ngIf="medicamentos.length === 0">
+                <span class="icon-computadora"></span>No hay medicamentos
+            </h2>
+            <div class="accordion-item " *ngFor="let medicamento of medicamentos; let i = index" style="padding-top: 1.5vw;">
+                <div class="accordion-header d-flex align-items-center text-wrap">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#medicamento' + i"
+                            (click)="selectMedicamento(medicamento)">
+                        <fa-icon [icon]="faPills"></fa-icon>
+                      {{ medicamento.nombreMedicamento }} - {{medicamento.horaPlaneadaAplicacion}} - {{ medicamento.dosis }} {{ medicamento.nombreUnidadAdministracion }}
+                    </button>
+                    <div class="col-1">
+                        <button class="btn btn-light" (click)="toggleAplicar(medicamento)">Aplicar</button>
+                    </div>
+                    <!-- <div class="col-1">
+                      <button class="btn detalles-btn p-0 m-0" type="button" data-bs-toggle="collapse"
+                            [attr.data-bs-target]="'#medicamento' + i"
+                            (click)="selectMedicamento(medicamento)">
+                        Ver detalle
+                    </button>
+                    </div> -->
+                </div>
+                <div [attr.id]="'medicamento' + i" class="accordion-collapse collapse"
+                    data-bs-parent="#nestedAccordion">
+                    <div class="accordion-body">
+
+                        <div class="modal-body">
+                            <div *ngIf="selectedMedicamento && selectedMedicamento === medicamento">
+                              <div class="card mb-3">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-12 col-md-6 mb-2">
+                                      <strong>Dosis: </strong>
+                                      <span style="color: gray;">{{ selectedMedicamento.dosis }} {{ selectedMedicamento.nombreUnidadAdministracion }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                      <strong>Vía de Administración: </strong>
+                                      <span style="color: gray;">{{ selectedMedicamento.nombreViaAdministracion }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                      <strong>Frecuencia: </strong>
+                                      <span style="color: gray;">{{ selectedMedicamento.frecuencia }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                      <strong>Indicadores Especiales: </strong>
+                                      <span style="color: gray;">{{ selectedMedicamento.nombreIndicacionEspecial }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                      <strong>Origen Medicamento: </strong>
+                                      <span style="color: gray;">{{ selectedMedicamento.origenMedicamento }}</span>
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-2">
+                                        <strong>Observacion Enfermería: </strong>
+                                        <span style="color: gray;">{{ selectedMedicamento.observacionEnfermeria }}</span>
+                                      </div>
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                          <label for="noAplicar" class="form-label">No Aplicar</label>
+                                          <select class="form-select" id="noAplicar" [(ngModel)]="selectedMedicamento.causaNoAplicacion" [ngModelOptions]="{ standalone: true }" (change)="toggleNoAplicar(selectedMedicamento)">
+                                            <option value="" disabled selected>Seleccione una causa</option>
+                                            <option *ngFor="let causa of causasNoAplicacion" [value]="causa.id">
+                                              {{ causa.nombre }}
+                                            </option>
+                                          </select>
+                                        </div>
+                                    </div>
+                                      
+                                   <!--  <div class="col-12 col-md-6" style="padding: 3vh;">
+                                        <button class="btn guardar-btn w-100" (click)="openVerAplicaciones()">Ver Aplicación</button>
+                                    </div> -->
+                                  </div>
+                                  <div class="row mt-3">
+                                    <div class="col-12 col-md-6">
+                                        <button class="btn btn-secondary w-100" (click)="openVerAplicaciones()">Ver Aplicación</button>
+                                      </div>
+                                    <div class="col-12 col-md-6">
+                                      <button class="btn guardar-btn w-100" (click)="openAplicarModal(selectedMedicamento)">Guardar</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                      
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item" style="padding-top: 1.5vw;">
+            <h2 class="accordion-insumos">
+                <button class="accordion-insumos-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                    <fa-icon [icon]="faBoxOpen"></fa-icon>
+                    Insumos
+                </button>
+            </h2>
+            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped table-bordered" id="tablaInsumos">
+                            <thead class="text-center bg-primary text-white">
+                                <tr>
+                                    <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Nombre Insumo</th>
+                                    <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Despachado</th>
+                                    <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Usados</th>
+                                    <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Cantidad a usar</th>
+                                    <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Guardar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="insumos.length === 0">
+                                    <td colspan="5">
+                                        <h2 class="titulo-sistema text-center" style="color: #ecc46d;">
+                                            <span class="icon-computadora"></span>No hay insumos
+                                        </h2>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let insumos of insumos">
+                                    <td class="text-secondary text-nowrap" style="background-color: white; color: black;">
+                                        <span class="cell-text">
+                                            {{ insumos.nombreInsumo }}
+                                        </span>
+                                    </td>
+                                    <td class="text-secondary text-nowrap text-center">{{ insumos.cantidad }}</td>
+                                    <td class="text-secondary text-nowrap text-center">{{ insumos.cantidadUsado }}</td>
+                                    <td class="d-flex justify-content-center align-items-center flex-wrap">
+                                        <button class="btn btn-outline-danger btn-sm mb-1" (click)="decrease(insumos)" style="flex: 1 1 auto; min-width: 45px;">-</button>
+                                        <input type="text" class="form-control text-center mx-1 mb-1" [value]="insumos.cantidadAUsar" readonly 
+                                               style="flex: 1 1 auto; min-width: 60px; width: 60px;" />
+                                        <button class="btn btn-outline-success btn-sm mb-1" (click)="increase(insumos)" style="flex: 1 1 auto; min-width: 45px;">+</button>
+                                    </td>                                    
+                                    <td class="text-secondary text-nowrap">
+                                        <button class="btn guardar-btn btn-sm" 
+                                                (click)="openInsumosModal(insumos)" 
+                                                [disabled]="insumos.cantidadAUsar === 0">
+                                            Guardar
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>                      
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-adicionales">
+                <button class="accordion-adicionales-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                    Tarjeta de medicamentos
+                </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="accordion" id="nestedAccordion">
+                        <h2 class="titulo-sistema" style="color: #ecc46d; " *ngIf="medicamentosPlaneados.length === 0">
+                            <span class="icon-computadora"></span>No hay planeación de medicamentos
+                        </h2>
+
+                        <div class="modal-body">
+                            <div *ngFor="let medicamento of medicamentosPlaneados">
+                              <div class="card mb-3">
+                                <div class="card-body">
+                                  <h6 class="card-title">{{ medicamento.nombreMedicamento }}</h6>
+                                  <strong style="color: gray;">Horarios de planeación:</strong> 
+                                  <span style="color: gray;">
+                                    <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
+                                      {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
+                                    </ng-container>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          
+
+
+
+                       <!--  <div class="accordion-item" *ngFor="let planeacion of medicamentosPlaneados; let i = index">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" style="background-color: white !important; color: black;" type="button" data-bs-toggle="collapse"
+                                    [attr.data-bs-target]="'#planeacion' + i"
+                                    (click)="selectMedicamentoPlaneacion(planeacion)">
+                                    {{ planeacion.nombreMedicamento }}
+                                </button>
+                            </h2>
+                            <div [attr.id]="'planeacion' + i" class="accordion-collapse collapse"
+                                data-bs-parent="#nestedAccordion">
+                                <div class="accordion-body">
+                                    <form
+                                        *ngIf="selectedMedicamentoPlaneacion && selectedMedicamentoPlaneacion === planeacion">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="horarios" class="form-label">Horarios de planeación</label>
+                                                <ul>
+                                                    <li *ngFor="let horario of planeacion.horasPlaneacion">{{ horario }}
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="accordion-item">
+            <h2 class="accordion-adicionales">
+                <button class="accordion-adicionales-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    <fa-icon [icon]="faTasks"></fa-icon>
+                    Ver Aplicaciones
+                </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <h2 class="titulo-sistema" style="color: #ecc46d; " *ngIf="aplicaciones.length === 0">
+                        <span class="icon-computadora"></span>No hay aplicaciones disponibles
+                    </h2>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="nombrePaciente" class="form-label">Nombre Paciente</label>
+                                <input type="text" class="form-control" id="nombrePaciente" [(ngModel)]="nombre"
+                                    name="nombre" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="tipoNumeroDocumento" class="form-label">Tipo y Número de Documento</label>
+                                <input type="text" class="form-control" id="tipoNumeroDocumento"
+                                    [(ngModel)]="tipoNumeroDocumento" name="tipoNumeroDocumento" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" id="fechaNacimiento"
+                                    [(ngModel)]="fechaNacimiento" name="fechaNacimiento" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="cama" class="form-label">Cama</label>
+                                <input type="text" class="form-control" id="cama" [(ngModel)]="cama" name="cama"
+                                    readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sexo" class="form-label">Sexo</label>
+                                <input type="text" class="form-control" id="sexo" [(ngModel)]="sexo" name="sexo"
+                                    readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="convenio" class="form-label">Convenio</label>
+                                <input type="text" class="form-control" id="convenio" [(ngModel)]="convenio"
+                                    name="convenio" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="plan" class="form-label">Plan</label>
+                                <input type="text" class="form-control" id="plan" [(ngModel)]="plan" name="plan"
+                                    readonly>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+
+
+<!-- Button modal aplicar medicamentos-->
+<button type="button" class="btn btn-modal-aplicar btn-secondary" data-bs-toggle="modal" data-bs-target="#modalAplicar" hidden>
+    Modal aplicar
+</button>
+
+<!-- Modal aplicar medicamentos-->
+<div class="modal fade" id="modalAplicar" tabindex="-1" role="dialog" aria-labelledby="modalAplicarLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center p-2">
+                    <h2 class="titulo-sistema" style="color: #03A9F4; text-align: center; ">
+                        <span class="icon-computadora"></span> Confirmar Aplicación
+                    </h2>
+                </div>
+                <div class="m-0">
+                    <p class="m-0 nombre-campo text-center p-2">Estás seguro de guardar la aplicación para:</p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Nombre:</span> 
+                        <span class="valor-dato">{{selectedMedicamentoModal.nombreMedicamento}}</span>
+                    </p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Dosis:</span> 
+                        <span class="valor-dato">{{selectedMedicamentoModal.dosis}} {{selectedMedicamentoModal.nombreUnidadAdministracion}}</span>
+                    </p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Observaciones de enfermería:</span> 
+                        <span class="valor-dato">{{selectedMedicamentoModal.observacionEnfermeria}} </span>
+                    </p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Vía de administración:</span> 
+                        <span class="valor-dato">{{selectedMedicamentoModal.nombreViaAdministracion}}</span>
+                    </p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Indicación especial:</span> 
+                        <span class="valor-dato">{{selectedMedicamentoModal.nombreIndicacionEspecial}}</span>
+                    </p>
+                    <p class="m-0">
+                        <span class="nombre-campo">Causa no aplicación:</span> 
+                        <span class="valor-dato">
+                            {{selectedMedicamentoModal.nombreCausaNoAplicacion }}
+                        </span>
+                    </p>
+                    <div *ngIf="selectedMedicamentoModal.nombreIndicacionEspecial === 'Infusión titulable' || 
+                        selectedMedicamentoModal.nombreIndicacionEspecial === 'En infusión continua' || 
+                        selectedMedicamentoModal.nombreIndicacionEspecial === 'Sin indicación especial'" class="mb-3">
+                        <label for="cantidadAplicada" class="nombre-campo">Cantidad aplicada:</label>
+                      <!--  <input type="number" class="form-control mt-2" id="cantidadAplicada" min="0" 
+                            [max]="selectedMedicamentoModal.cantidadTotal-selectedMedicamentoModal.cantidadAplicado" 
+                            [(ngModel)]="selectedMedicamentoModal.cantidadPorAplicacion"
+                            [ngModelOptions]="{standalone: true}"
+                            name="cantidadAplicada"
+                            style="color: gray !important;" placeholder="Ingrese la cantidad aplicada"> --> 
+
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-danger btn-sm mb-1" (click)="decreaseMedicamentos(selectedMedicamentoModal)" style="flex: 1 1 auto; min-width: 45px;">-</button>
+                                <input type="text" class="form-control text-center mx-1 mb-1" [value]="selectedMedicamentoModal.cantidadPorAplicacion" readonly 
+                                       style="flex: 1 1 auto; min-width: 60px; width: 60px;" />
+                                <button class="btn btn-outline-success btn-sm mb-1" (click)="increaseMedicamentos(selectedMedicamentoModal)" style="flex: 1 1 auto; min-width: 45px;">+</button>
+                            </div>
+                               
+                    </div>                    
+                    <div class="mb-3">
+                        <label for="observaciones" class="nombre-campo">Observaciones</label>
+                        <textarea class="form-control mt-2" id="observacionesAplicacion" autofocus style="color: gray !important;"
+                        [(ngModel)]="selectedMedicamentoModal.observacionAplicacion"
+                        [ngModelOptions]="{standalone: true}"
+                        name="observacionesAplicacion"
+                        [required]="selectedMedicamentoModal.causaNoAplicacion === 'Otro'"></textarea>
+                    </div>
+                </div>
+                
+                <div class="p-2">
+                    <div class="d-flex justify-content-around">
+                        <button type="button" class="btn btn-primary w-100 me-2" data-bs-dismiss="modal" (click)="guardarAplicacion()">Confirmar</button>
+                        <button type="button" class="btn btn-secondary w-100 ms-2" data-bs-dismiss="modal" (click)="CancelarGuardarAplicacion()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button modal ver aplicación de  medicamentos-->
+<button type="button" class="btn btn-modal-ver-aplicaciones btn-secondary" data-bs-toggle="modal" data-bs-target="#verAplicacionesModal" hidden>
+    Modal ver aplicaciones de medicamentos
+</button>
+
+<!--Modal Ver Aplicaciones -->
+<div class="row">
+    <div class="modal fade" id="verAplicacionesModal" tabindex="-1" aria-labelledby="verAplicacionesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #0277BD;">
+                    <h5 class="modal-title" id="verAplicacionesModalLabel" style="color: white;">Aplicaciones de
+                        Medicamento</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2 class="titulo-sistema" style="color: #ecc46d; " *ngIf="aplicaciones.length === 0">
+                        <span class="icon-computadora"></span>No hay aplicaciones disponibles
+                    </h2>
+                    <div *ngFor="let aplicacion of aplicaciones"> 
+                        <div class="card mb-3">
+                          <div class="card-body" style="color: gray;">
+                            <p class="card-text">
+                              <strong style="color: black;">Fecha aplicación:</strong> {{ aplicacion.fechaAplicacion }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Horario aplicación:</strong> {{ aplicacion.horaAplicacion }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Usuario que aplicó:</strong> {{ aplicacion.usuarioAplica }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Aplicado:</strong> {{ aplicacion.aplicado ? 'Sí' : 'No' }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Observaciones:</strong> {{ aplicacion.observaciones }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Causa No Aplica:</strong> {{ aplicacion.nombreCausaNoAplica }}
+                            </p>
+                            <p class="card-text">
+                              <strong style="color: black;">Hora Planeacion:</strong> {{ aplicacion.horaPlaneacion }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Button modal aplicar medicamentos-->
+<button type="button" class="btn btn-modal-multidosis btn-secondary" data-bs-toggle="modal" data-bs-target="#modalMultidosis" hidden>
+    Modal multidosis
+</button>
+
+<!-- Modal aplicar medicamentos-->
+<div class="modal fade" id="modalMultidosis" tabindex="-1" role="dialog" aria-labelledby="modalMultidosisLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center p-2">
+                    <h2 class="titulo-sistema" style="color: #03A9F4; text-align: center; ">
+                        <span class="icon-computadora"></span> Confirmar Aplicación multidosis
+                    </h2>
+                </div>
+                <div class="m-0">
+                    <p class="m-0 nombre-campo text-center p-2">Deseas utilizar una nueva ampolla de:</p>
+                    <p class="m-0">
+                        <span class="valor-dato text-center">{{selectedMedicamentoModal.nombreMedicamento}}</span>
+                    </p>
+                </div>
+                
+                <div class="p-2">
+                    <div class="d-flex justify-content-around">
+                        <button type="button" class="btn btn-primary w-100 me-2" data-bs-dismiss="modal" (click)="descontarOrden()">Sí</button>
+                        <button type="button" class="btn btn-secondary w-100 ms-2" data-bs-dismiss="modal" (click)="noDescontarOrden()">No</button>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button modal aplicar medicamentos-->
+<button type="button" class="btn btn-modal-medicamentos btn-secondary" data-bs-toggle="modal" data-bs-target="#modalMedicamentos" hidden>
+    Modal medicamentos en sab
+</button>
+
+<!-- Modal aplicar medicamentos-->
+<div class="modal fade" id="modalMedicamentos" tabindex="-1" role="dialog" aria-labelledby="modalMedicamentosLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0277BD;">
+                <h5 class="modal-title" id="verAplicacionesModalLabel" style="color: white;">Aplicaciones de
+                    Medicamento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <h2 class="titulo-sistema" style="color:rgb(2, 119, 189); margin-top: 1vw; text-align: center;">
+                <span class="icon-computadora"></span>DATOS DEL PACIENTE
+            </h2>
+            <div class="modal-body">
+                <div class="col-12">
+                    <label for="nombrePaciente" class="form-label" style="color: black;">Nombre Paciente</label>
+                    <input type="text" class="form-control" id="nombrePaciente" [(ngModel)]="nombre" name="nombre" readonly>
+                </div>
+                <div class="col-12">
+                    <label for="tipoNumeroDocumento" class="form-label" style="color: black;">Tipo y Número de Documento</label>
+                    <input type="text" class="form-control" id="tipoNumeroDocumento"
+                        [(ngModel)]="tipoNumeroDocumento" name="tipoNumeroDocumento" readonly>
+                </div>
+                <div class="col-12">
+                    <label for="fechaNacimiento" class="form-label" style="color: black;">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fechaNacimiento"
+                        [(ngModel)]="fechaNacimiento" name="fechaNacimiento" readonly>
+                </div>
+                <div class="col-12">
+                    <label for="sexo" class="form-label" style="color: black;" >Sexo</label>
+                    <input type="text" class="form-control" id="sexo" [(ngModel)]="sexo" name="sexo"
+                        readonly>
+                </div>  
+                <h2 class="titulo-sistema" style="color:rgb(2, 119, 189); margin-top: 2vw; text-align: center;" *ngIf="medicamentosPlaneados.length > 0">
+                    <span class="icon-computadora"></span>HOJA DE ADMINISTRACIÓN DE MEDICAMENTOS
+                </h2>
+
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped" id="tablaDatoSab">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Medicamento</th>
+                                <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Dosis</th>
+                                <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Observaciones</th>
+                                <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Hora de aplicación</th>
+                                <th scope="col" class="text-nowrap" style="background-color: white; color: black;">Origen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="medicamentosPlaneados.length === 0">
+                                <td colspan="5">
+                                    <h2 class="titulo-sistema" style="color:rgb(2, 119, 189); margin-top: 3vw; text-align: center;" *ngIf="medicamentosPlaneados.length === 0">
+                                        <span class="icon-computadora"></span>No hay medicamentos
+                                    </h2>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let medicamento of medicamentosPlaneados">
+                                <td class="text-secondary text-nowrap" style="background-color: white; color: black;">
+                                    <span class="cell-text">
+                                        {{ medicamento.nombreMedicamento }}
+                                    </span>
+                                </td>
+                                <td class="text-secondary text-nowrap">{{ medicamento.dosis }} {{medicamento.unidadMedida}}</td>
+                                <td class="text-secondary text-nowrap">
+                                    <span class="cell-text">
+                                        {{ medicamento.observaciones }}
+                                    </span>
+                                </td>    
+                                <td class="text-secondary text-nowrap">
+                                    <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
+                                    {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
+                                </ng-container></td>  
+                                <td class="text-secondary text-nowrap">{{ medicamento.origen }}</td>    
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+<!--
+                <div *ngFor="let medicamento of medicamentosPlaneados"> 
+                    <div class="card mb-3">
+                        <div class="col-12">
+                            <strong>Nombre Medicamento: </strong>
+                            <span style="color: gray;">{{ medicamento.nombreMedicamento }}</span>
+                        </div>
+                        <div class="col-12 ">
+                            <strong>Dosis: </strong>
+                            <span style="color: gray;">{{ medicamento.dosis }} {{ medicamento.unidadMedida }}</span>
+                        </div>
+                        <div class="col-12 ">
+                            <strong>Vía de Administración: </strong>
+                            <span style="color: gray;">{{ medicamento.viaAdmin }}</span>
+                        </div>
+                        <div class="col-12 ">
+                            <strong>Frecuencia: </strong>
+                            <span style="color: gray;">{{ medicamento.frecuencia }}</span>
+                        </div>
+                        <div class="col-12 ">
+                            <strong>Origen Medicamento: </strong>
+                            <span style="color: gray;">{{ medicamento.origen }}</span>
+                        </div>
+                        <div class="col-12 ">
+                            <strong>Horas de planeación: </strong>
+                            <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
+                                {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
+                            </ng-container>
+                        </div>
+                    </div>
+                  </div> -->
+                  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button modal inactividad-->
+<button type="button" class="btn btn-modal-inactividad btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInactividad" hidden>
+    Modal medicamentos en sab
+</button>
+
+<!-- Modal inactividad-->
+<div class="modal fade" id="modalInactividad" tabindex="-1" role="dialog" aria-labelledby="modalInactividadLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0277BD;">
+                <h5 class="modal-title" id="verAplicacionesModalLabel" style="color: white;">Sesión expirada</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h2 class="titulo-sistema" style="margin-top: 1vw; text-align: center;">
+                    <span class="icon-computadora"></span>Tiempo de inactividad superada, es necesario iniciar sesión nuevamente
+                </h2>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary w-100 me-2" data-bs-dismiss="modal">Continuar</button>
+            </div>
+        </div>
+    </div>
+</div>

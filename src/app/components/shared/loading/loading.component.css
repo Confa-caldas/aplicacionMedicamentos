@@ -1,0 +1,45 @@
+/************************************ MODAL LOADING ************************************/
+div.modal-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div.modal-loading div.modal-content {
+  background-color: transparent;
+  border: none;
+  max-width: 80%;
+  width: 100%;
+}
+
+div.modal-loading div.modal-content div div.img-loading {
+  background-image: url("/assets/img/loading.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  height: 300px;
+  max-width: 70%;
+}
+
+div.modal-loading div.modal-content div h2 {
+  color: #fff;
+  font-weight: 100;
+  font-size: 2rem; 
+  text-align: center;
+}
+
+@media only screen and (max-width: 576px) {
+  div.modal-loading div.modal-content div div.img-loading {
+    height: 150px !important; 
+  }
+  div.modal-loading div.modal-content div h2 {
+    font-size: 1.5rem; 
+  }
+}

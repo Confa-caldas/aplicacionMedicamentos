@@ -1,0 +1,58 @@
+<div class="justify-content-center align-items-center">
+  <p class="card-text text-wrap" style="color: #888888; text-align: center;" type="disc">
+    Por favor, mira de frente a la cámara. Te recomendamos no usar gafas
+    oscuras, tapabocas o gorras, procede a oprimir el botón acceder para
+    iniciar sesión en tu aplicativo.
+  </p>
+
+  <div *ngIf="errors.length > 0" class="alert alert-danger d-flex align-items-center mt-3 text-wrap">
+    <i class="fas fa-exclamation-triangle me-2 text-wrap"></i>
+    <span>Cámara desactivada: Se deben dar permisos al navegador para utilizar la cámara y poder continuar.</span>
+  </div>
+
+  <div class="modal-body">
+    <div class="container2">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <div
+            class="card-login card border d-flex flex-column align-items-center align-items-stretch"
+          >
+            <div class="card-body card-body-login animated fadeIn fast">
+              <div
+                style="text-align: center"
+                class="wrapper"
+                (window:resize)="onResize($event)"
+              >
+                <div>
+                  <webcam
+                    [height]="height"
+                    [width]="width"
+                    [trigger]="triggerObservable"
+                    (imageCapture)="handleImage($event)"
+                    *ngIf="showWebcam"
+                    [allowCameraSwitch]="allowCameraSwitch"
+                    [switchCamera]="nextWebcamObservable"
+                    [videoOptions]="videoOptions"
+                    (cameraSwitched)="cameraWasSwitched($event)"
+                    (initError)="handleInitError($event)"
+                  ></webcam>
+                  <br />
+
+                  <button
+                    class="btn-primary btn mt-1 mb-1 validar"
+                    [disabled]="errors.length > 0"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    (click)="triggerSnapshot(1)"
+                  >
+                    <h4 class="m-0">Validar</h4>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

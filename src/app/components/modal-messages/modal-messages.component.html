@@ -1,0 +1,88 @@
+<!-- Button error -->
+<button *ngIf="utilitiesService.showErrorModal" type="button" class="btn-modal-token-expired btn btn-primary" data-toggle="modal" data-target="#modalTokenExpired" hidden>
+    Modal token expired
+</button>
+
+<!-- Modal token expired -->
+<div *ngIf="utilitiesService.showErrorModal" class="modal fade modal-token-expired" id="modalTokenExpired" tabindex="-1" role="dialog" aria-labelledby="modalTokenExpiredLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header error-header" id="modalTokenExpiredLabel">
+                <div>
+                    <div class="d-flex align-items-center justify-content-center m-4">
+                        <i aria-hidden="true" class="fa fa-exclamation-circle fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body text-wrap">
+                <div class="text-center p-2">
+                    <h6 class="m-0 pt-3 pb-3">{{ utilitiesService.messageTitleModal }}</h6>
+                    <div class="m-0 pt-3 pb-3">
+                        <span *ngIf="utilitiesService.messageModal">
+                        <p class="text-center m-0">{{ utilitiesService.messageModal }}</p>
+                        </span>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex">
+                        <button type="button" class="btn-close btn btn-block" data-dismiss="modal" aria-label="Close" data-backdrop="false">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button modal success -->
+<button *ngIf="utilitiesService.showSuccessModal" type="button" class="btn-modal-success btn btn-primary" data-toggle="modal" data-target="#modalSuccess" hidden>
+    Modal success
+</button>
+
+<!-- Modal success -->
+<div *ngIf="utilitiesService.showSuccessModal" class="modal fade modal-success" id="modalSuccess" tabindex="-1" role="dialog" aria-labelledby="modalSuccessLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header success-header" id="modalSuccessLabel">
+                <div>
+                    <div class="d-flex align-items-center justify-content-center m-4">
+                        <img src="assets/img/success.png" class="animate__animated animate__fadeIn animate__fast">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Button modal error -->
+<button type="button" class=" btn btn-modal-error btn-secondary" data-bs-toggle="modal" data-bs-target="#modalError" hidden>
+    Modal error
+</button>
+
+<!-- Modal error -->
+<div class="modal fade modal-error" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content">
+            <div class="modal-header error-header" id="modalErrorLabel">
+                <div>
+                    <div class="d-flex align-items-center justify-content-center m-4">
+                        <img src="assets/img/error.png" class="animate__animated animate__fadeIn animate__fast">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body text-wrap">
+                <div class="text-center p-2">
+                    <h6 class="m-0 pt-3 pb-3">{{ utilitiesService.messageTitleModal }}</h6>
+                    <div class="m-0 pt-3 pb-3">
+                        <p class="m-0">{{ utilitiesService.messageModal }}</p>
+                    </div>
+                </div>
+                <div class="p-2">
+                    <div class="d-flex">
+                        <button type="button" class="btn-close btn btn-block" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

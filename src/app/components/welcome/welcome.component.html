@@ -1,0 +1,45 @@
+<div *ngIf="loading">
+  <app-loading></app-loading>
+</div>
+
+<div class="container justify-content-center align-items-center">
+
+  <div class="card shadow-lg p-4" style="max-width: 500px;">
+    <div class="card-body text-center">
+      <h2 class="text-primary mb-3" style="color: #00afeb !important">Bienvenido</h2>
+      <p class="text-muted mb-4 text-wrap">Este espacio es para el registro de medicamentos</p>
+      <button class="btn btn-facial btn-block" type="button" data-bs-toggle="modal" data-bs-target="#modalCamara">
+
+        <img src="../../../assets/img/facial blue2.png" class="mr-2" style="height: 20px;"
+          alt="Icono de reconocimiento facial" />
+        Reconocimiento facial
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modal-camara" id="modalCamara" tabindex="-1" role="dialog" aria-labelledby="modalPopupLoginLabel"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered justify-content-center" role="document">
+    <div class="modal-content">
+      <div class="modal-header camara-header" id="modalCamaraLabel"
+        style="background-color: #03a9f4; color: #fff; font-style: bold">
+        <button type="button" class="btn-close btn-cerrar-facial" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="col-md-11 text-center">
+          <div class="justify-content-center" style="display: flex; align-items: center">
+            <img src="assets/img/facial.png" class="m-0 p-0" style="width: 40px"
+              class="animate__animated animate__fadeIn animate__fast" />
+            <div class="p-0" style="margin-left: 10px">
+              Reconocimiento facial
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <app-login-interno></app-login-interno>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-content></app-modal-content>
