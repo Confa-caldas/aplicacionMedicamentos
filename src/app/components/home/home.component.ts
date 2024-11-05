@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
     cantidadAplicado: 0,
     cantidadDevolucion: '',
     cantidadNoAplicado: '',
-    cantidadPorAplicacion: '',
+    cantidadPorAplicacion: 0,
     cantidadTotal: 0,
     causaNoAplicacion: '',
     horaPlaneadaAplicacion: '',

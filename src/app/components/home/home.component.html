@@ -467,7 +467,7 @@
                 
                 <div class="p-2">
                     <div class="d-flex justify-content-around">
-                        <button type="button" class="btn btn-primary w-100 me-2" data-bs-dismiss="modal" (click)="guardarAplicacion()">Confirmar</button>
+                        <button type="button" class="btn btn-primary w-100 me-2" data-bs-dismiss="modal" [disabled]="selectedMedicamentoModal.cantidadPorAplicacion === 0" (click)="guardarAplicacion()">Confirmar</button>
                         <button type="button" class="btn btn-secondary w-100 ms-2" data-bs-dismiss="modal" (click)="CancelarGuardarAplicacion()">Cancelar</button>
                     </div>
                 </div>
