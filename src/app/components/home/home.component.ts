@@ -478,7 +478,7 @@ decrease(insumo: any) {
 }
 
 increaseMedicamentos(medicamento: any) {
-  if (medicamento.cantidadPorAplicacion < (medicamento.cantidadTotal - medicamento.cantidadAplicado)) {
+  if (medicamento.cantidadPorAplicacion < (medicamento.cantidadTotal - medicamento.cantidadAplicado - medicamento.cantidadNoAplicado)) {
     medicamento.cantidadPorAplicacion++;
   }
 }

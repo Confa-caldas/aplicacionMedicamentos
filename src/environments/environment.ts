@@ -11,8 +11,8 @@ export const environment = {
   excepcionFacial: 'ojos-boca-dimension-gafasDeSol-brillo',
   tipoValidacionFacial: 'validacion',
 // identificacionSas: 'https://app.confa.co:8361/medicamentosWS/rest/medicamentos/', // ruta apuntando al nbappo
-  //identificacionSas: 'http://localhost:8081/medicamentosWS/rest/medicamentos/',
-  //identificacionSas: 'https://sasweb.confa.co:8322/medicamentosWS/rest/medicamentos/', //ruta apuntando al DMZSAS
+//identificacionSas: 'http://localhost:8081/medicamentosWS/rest/medicamentos/',
+ // identificacionSas: 'https://sasweb.confa.co:8322/medicamentosWS/rest/medicamentos/', //ruta apuntando al DMZSAS
   identificacionSas: 'https://sasweb.confa.co:8586/medicamentosWS/rest/medicamentos/', // producción
   parametro1: "hlZTM4ZDcwNDRlODcyNzZDX1BPUlQqMjAxOCQ=", 
   parametro2: "UG9ydGFsX0NvbmZhODRkZGZiMzQxMjZmYzNhND",
