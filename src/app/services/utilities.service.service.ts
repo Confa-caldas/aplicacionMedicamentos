@@ -18,7 +18,7 @@ export class UtilitiesServiceService {
   messageLoading: string = "";
 
   //inactividad
-  private readonly timeoutDuration = 1800000 ; 
+  private readonly timeoutDuration = 60000 ; 
   private activityTimeout: any;
   inactivitySubject = new Subject<boolean>();
 
@@ -199,20 +199,40 @@ export class UtilitiesServiceService {
 
  
   startTimer() {
-    this.resetTimer();
+    clearInterval(this.activityTimeout); // Limpia cualquier intervalo previo.
+    this.activityTimeout = setInterval(() => {
+      this.checkInactivity();
+    }, 1000); // Chequea cada segundo.
+  }
+
+  checkInactivity() {
+    const lastActivity = Number(localStorage.getItem('lastActivity') || Date.now());
+    const currentTime = Date.now();
+  
+    if (currentTime - lastActivity > this.timeoutDuration) {
+      this.inactivitySubject.next(true); // Notifica inactividad.
+      this.stopTimer(); // Detén el temporizador.
+    }
   }
 
   resetTimer() {
-    clearTimeout(this.activityTimeout);
-    this.activityTimeout = setTimeout(() => {
-      this.inactivitySubject.next(true); 
-    }, this.timeoutDuration);
+    localStorage.setItem('lastActivity', Date.now().toString()); // Actualiza la última actividad.
   }
 
   setActivityListeners() {
     ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'].forEach((event) => {
       window.addEventListener(event, () => this.resetTimer());
     });
+  
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this.resetTimer(); // Reinicia el temporizador si la aplicación vuelve al frente.
+      }
+    });
+  }
+  
+  stopTimer() {
+    clearInterval(this.activityTimeout);
   }
 
   emitirNombreUsuario(nombre: string) {
