@@ -15,11 +15,11 @@ export class UtilitiesServiceService {
   messageLoading: string = '';
 
   // Inactividad
-  private readonly logoutDuration = 60000; // 1 minutos en milisegundos
+  private readonly logoutDuration = 420000; 
   private activityTimeout: any;
   inactivitySubject = new Subject<boolean>();
-  private hiddenStartTime: number | null = null; // Tiempo en que la página se ocultó
-  private hiddenAccumulatedTime: number = 0; // Tiempo acumulado en segundo plano
+  private hiddenStartTime: number | null = null; 
+  private hiddenAccumulatedTime: number = 0; 
 
   // Nombre de usuario
   private nombreUsuarioSource = new Subject<string>();
@@ -46,7 +46,7 @@ export class UtilitiesServiceService {
     if (this.isBrowser()) {
       this.startTimer();
       this.setActivityListeners();
-      this.setupVisibilityChangeListener(); // Configura el listener de visibilidad
+      this.setupVisibilityChangeListener(); 
     }
   }
 
@@ -175,7 +175,6 @@ export class UtilitiesServiceService {
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.userKey);
       this.emitirNombreUsuario('');
-      alert('Sesión cerrada por inactividad.');
     }
   }
 
@@ -196,12 +195,12 @@ export class UtilitiesServiceService {
 
     this.activityTimeout = setInterval(() => {
       this.checkInactivity();
-    }, 1000); // Verificar cada segundo
+    }, 1000); 
   }
 
   resetTimer() {
     localStorage.setItem('lastActivity', Date.now().toString());
-    this.hiddenAccumulatedTime = 0; // Reinicia el tiempo acumulado
+    this.hiddenAccumulatedTime = 0; 
   }
 
   checkInactivity() {
