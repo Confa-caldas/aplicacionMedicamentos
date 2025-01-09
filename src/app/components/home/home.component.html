@@ -642,7 +642,7 @@
                                 </td>    
                                 <td class="text-secondary text-nowrap">
                                     <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
-                                    {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
+                                    {{ horario }}<span class="cell-text" *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
                                 </ng-container></td>  
                                 <td class="text-secondary text-nowrap">{{ medicamento.origen }}</td>    
                             </tr>

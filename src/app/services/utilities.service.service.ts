@@ -1,73 +1,68 @@
-import { Injectable,  } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { Token } from '../interfaces/user.interface';
-import { Subject } from 'rxjs';
-
 
 @Injectable({
-  providedIn: 'root'
-  
+  providedIn: 'root',
 })
 export class UtilitiesServiceService {
-    // Loading
+  // Loading
   loading: boolean = false;
-  messageLoading: string = "";
+  messageLoading: string = '';
 
-  //inactividad
-  private readonly timeoutDuration = 1800000 ; 
+  // Inactividad
+  private readonly logoutDuration = 1800000; 
   private activityTimeout: any;
   inactivitySubject = new Subject<boolean>();
+  private hiddenStartTime: number | null = null; 
+  private hiddenAccumulatedTime: number = 0; 
 
+  // Nombre de usuario
   private nombreUsuarioSource = new Subject<string>();
   nombreUsuario$ = this.nombreUsuarioSource.asObservable();
 
   // Modal
-  messageTitleModal: string = "";
-  messageModal: string = "";
+  messageTitleModal: string = '';
+  messageModal: string = '';
   public showErrorModal: boolean = false;
   public showSuccessModal: boolean = false;
-  show: boolean = false;
 
-  //scanner
+  // Scanner
   private genericTokenSubject!: BehaviorSubject<Token>;
   public genericToken!: Observable<Token>;
   private currentTokenSubject!: BehaviorSubject<Token>;
   public currentToken!: Observable<Token>;
 
-  //user
+  // User
   public tokenKey = 'authToken';
   private userKey = 'nombreUsuario';
   private nombreUsuario = 'nombreUsuario2';
 
-  constructor(
-    private http: HttpClient,
-    private cookieService: CookieService,
-    
-    
-  ) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     if (this.isBrowser()) {
       this.startTimer();
       this.setActivityListeners();
+      this.setupVisibilityChangeListener(); 
     }
   }
 
-  //Métodos para el Scanner
+  // Métodos para el scanner
   private loadTokens() {
     let gtoken =
-      this.cookieService.get("gtoken") !== ""
-        ? JSON.parse(this.cookieService.get("gtoken"))
-        : "";
+      this.cookieService.get('gtoken') !== ''
+        ? JSON.parse(this.cookieService.get('gtoken'))
+        : '';
     this.genericTokenSubject = new BehaviorSubject<Token>(gtoken);
     this.genericToken = this.genericTokenSubject.asObservable();
 
     let ptoken =
-      this.cookieService.get("ptoken") !== ""
-        ? JSON.parse(this.cookieService.get("ptoken"))
-        : "";
+      this.cookieService.get('ptoken') !== ''
+        ? JSON.parse(this.cookieService.get('ptoken'))
+        : '';
     this.currentTokenSubject = new BehaviorSubject<Token>(ptoken);
     this.currentToken = this.currentTokenSubject.asObservable();
   }
@@ -84,11 +79,8 @@ export class UtilitiesServiceService {
     const url = `${environment.apiIngresoConfa}${query}`;
     const body = bodyContent;
 
-    /* const tk =  JSON.parse(this.cookieService.get("gtoken"))
-    console.log(tk) */
-
     let reqHeader = new HttpHeaders({
-      'Authorization': token
+      Authorization: token,
     });
 
     return this.http.post(url, body, { headers: reqHeader });
@@ -98,21 +90,20 @@ export class UtilitiesServiceService {
     let genericToken = {
       parametro1: `${environment.parametro1}`,
       parametro2: `${environment.parametro2}`,
-      parametro3: "Web",
+      parametro3: 'Web',
     };
 
-    return this.getQuery("auth", genericToken, "").pipe(
+    return this.getQuery('auth', genericToken, '').pipe(
       map((response: Token) => {
-
         if (response.token) {
           this.cookieService.set(
-            "gtoken",
+            'gtoken',
             JSON.stringify(response),
             1,
-            "/",
+            '/',
             undefined,
             false,
-            "Strict"
+            'Strict'
           );
 
           this.genericTokenSubject.next(response);
@@ -123,15 +114,12 @@ export class UtilitiesServiceService {
   }
 
   public getData(document: number, token: string) {
-
     let bodyUser = {
       documento: document.toString(),
     };
 
-
-    return this.getQuery("confa/metodo33", bodyUser, token).pipe(
+    return this.getQuery('confa/metodo33', bodyUser, token).pipe(
       map((response) => {
-        // console.log(Object.values(response))
         return Object.values(response);
       })
     );
@@ -150,8 +138,6 @@ export class UtilitiesServiceService {
     this.messageModal = message;
   }
 
-  
-
   hideModals() {
     this.showErrorModal = false;
     this.showSuccessModal = false;
@@ -166,7 +152,7 @@ export class UtilitiesServiceService {
       localStorage.setItem(this.tokenKey, token);
       localStorage.setItem(this.userKey, nombreUsuario);
       localStorage.setItem(this.nombreUsuario, nombreUsuario2);
-      this.emitirNombreUsuario(nombreUsuario); 
+      this.emitirNombreUsuario(nombreUsuario);
     }
   }
 
@@ -174,7 +160,7 @@ export class UtilitiesServiceService {
     if (this.isBrowser()) {
       return !!localStorage.getItem(this.tokenKey);
     }
-    return false;  
+    return false;
   }
 
   getNombreUsuario(): string | null {
@@ -192,21 +178,45 @@ export class UtilitiesServiceService {
     }
   }
 
-  limpiarDatos(){
+  limpiarDatos() {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
   }
 
- 
   startTimer() {
     this.resetTimer();
+    this.setActivityListeners();
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this.checkInactivity();
+      }
+    });
+
+    this.activityTimeout = setInterval(() => {
+      this.checkInactivity();
+    }, 1000); 
   }
 
   resetTimer() {
-    clearTimeout(this.activityTimeout);
-    this.activityTimeout = setTimeout(() => {
-      this.inactivitySubject.next(true); 
-    }, this.timeoutDuration);
+    localStorage.setItem('lastActivity', Date.now().toString());
+    this.hiddenAccumulatedTime = 0; 
+  }
+
+  checkInactivity() {
+    const lastActivity = Number(localStorage.getItem('lastActivity') || Date.now());
+    const currentTime = Date.now();
+
+    const totalInactiveTime = currentTime - lastActivity + this.hiddenAccumulatedTime;
+
+    if (totalInactiveTime > this.logoutDuration) {
+      this.inactivitySubject.next(true);
+      this.logout();
+    }
+  }
+
+  stopTimer() {
+    clearInterval(this.activityTimeout);
   }
 
   setActivityListeners() {
@@ -215,9 +225,25 @@ export class UtilitiesServiceService {
     });
   }
 
+  setupVisibilityChangeListener() {
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.hiddenStartTime = Date.now();
+      } else {
+        if (this.hiddenStartTime) {
+          const hiddenTime = Date.now() - this.hiddenStartTime;
+          this.hiddenAccumulatedTime += hiddenTime;
+          this.hiddenStartTime = null;
+
+          if (this.hiddenAccumulatedTime >= this.logoutDuration) {
+            this.logout();
+          }
+        }
+      }
+    });
+  }
+
   emitirNombreUsuario(nombre: string) {
     this.nombreUsuarioSource.next(nombre);
   }
-
-
 }
