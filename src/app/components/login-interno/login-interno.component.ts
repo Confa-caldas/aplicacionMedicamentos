@@ -63,12 +63,11 @@ export class LoginInternoComponent implements OnInit {
               console.log(response);
               if (
                 response.doc === 'No se identifico.' ||
-                response.doc === 'error' ||
-                response.doc === ''
+                response.doc === 'error'
               ) {
                 this.utilitiesService.loading = false;
                 setTimeout(() => {
-                  this.utilitiesService.showError('¡Ten presente!', response.msg);
+                  this.utilitiesService.showError('¡Ten presente!', response.doc);
                   $('.btn-modal-error').click();
                 }, 500);
               } else {
