@@ -287,16 +287,26 @@
                               <div class="card mb-3">
                                 <div class="card-body">
                                   <h6 class="card-title">{{ medicamento.nombreMedicamento }}</h6>
-                                  <strong style="color: gray;">Horarios de planeación:</strong> 
-                                  <span style="color: gray;">
-                                    <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
-                                      {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
-                                    </ng-container>
-                                  </span>
+                                  
+                                  <p><strong style="color: gray;">Dosis:</strong> {{ medicamento.dosis }} {{ medicamento.unidadMedida }}</p>
+                                  
+                                  <p><strong style="color: gray;">Observaciones:</strong> {{ medicamento.observaciones || 'N/A' }}</p>
+                                  
+                                  <p><strong style="color: gray;">Origen:</strong> {{ medicamento.origen || 'N/A' }}</p>
+                                  
+                                  <p>
+                                    <strong style="color: gray;">Horarios de planeación:</strong> 
+                                    <span>
+                                      <ng-container *ngFor="let horario of medicamento.horasPlaneacion; let i = index">
+                                        {{ horario }}<span *ngIf="i < medicamento.horasPlaneacion.length - 1">, </span>
+                                      </ng-container>
+                                    </span>
+                                  </p>
                                 </div>
                               </div>
                             </div>
                           </div>
+                          
                           
 
 
