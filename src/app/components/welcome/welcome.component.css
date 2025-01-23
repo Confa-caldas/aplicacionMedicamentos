@@ -141,6 +141,27 @@ div.navbar-welcome div.content-user p.card-text {
 font-size: 18px;
 }
 
+/* Estilo para ambos botones */
+.btn-facial {
+  background-color: #00afeb;
+  color: #fff;
+  border-color: 00afeb;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-weight: bold;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.me-2 {
+  margin-right: 8px;
+}
+
+
 @media (min-width: 570px){
     .container {
         max-width: 100%;

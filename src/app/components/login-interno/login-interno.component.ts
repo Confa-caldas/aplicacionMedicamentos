@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { WebcamModule, WebcamImage } from 'ngx-webcam';
 import { AuthenticationService } from '../../services/authentication.service';
 import { UtilitiesServiceService } from '../../services/utilities.service.service';
 import { CameraComponent } from '../camera/camera.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import * as CryptoJS from 'crypto-js'
 import $ from 'jquery';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login-interno',
   standalone: true,
-  imports: [CameraComponent, CommonModule, WebcamModule, RouterModule],
+  imports: [CameraComponent, CommonModule, WebcamModule, RouterModule, FormsModule],
   templateUrl: './login-interno.component.html',
   styleUrl: './login-interno.component.css'
 })
@@ -24,6 +26,10 @@ export class LoginInternoComponent implements OnInit {
   myIP: string = '';
   public showWebcam = false;  
   nombreUsuario = '';
+  username: string = '';
+  password: string = '';
+
+  @Output() loginCompleted = new EventEmitter<void>();
 
   constructor(
     private router: Router,
@@ -60,7 +66,6 @@ export class LoginInternoComponent implements OnInit {
           .inicioSesionInternoV2(this.webcamImage.imageAsBase64)
           .subscribe(
             (response: any) => {
-              console.log(response);
               if (
                 response.doc === 'No se identifico.' ||
                 response.doc === 'error'
@@ -83,7 +88,6 @@ export class LoginInternoComponent implements OnInit {
                     if (estadoUsuario) {
                       this.authenticationService.inicioSesionSas(bodySas).subscribe(
                         (response: any) => {
-                          console.log(response);
                           const estado = response.estado;
                           const respuesta = response.respuesta;
                           const nombre = response.nombre;
@@ -163,6 +167,58 @@ export class LoginInternoComponent implements OnInit {
       );
     }
     return result;
+  }
+
+  encriptarConfa(valor: string): string {
+    return valor
+      .replace(/1/g, 'Fb')
+      .replace(/2/g, 'at')
+      .replace(/4/g, 'VI')
+      .replace(/6/g, 'pZ')
+      .replace(/7/g, 'sH')
+      .replace(/9/g, 'Dx')
+      .replace(/3/g, 'Mo')
+      .replace(/0/g, 'rQ');
+  }
+
+  onLogin(usuario: string, clave: string) {
+    this.utilitiesService.loading = true;
+    this.username = usuario;
+    this.password = clave;
+    
+    if (this.username.trim() === '' || this.password.trim() === '') {
+      this.utilitiesService.loading = false;
+      setTimeout(() => {
+        this.utilitiesService.showError('¡Ten presente!', 'Por favor, ingresa tu usuario y contraseña.');
+        $('.btn-modal-error').click();
+      }, 500);
+      return;
+    } else {
+      const encryptedPassword = CryptoJS.SHA256(this.password).toString();
+      const encryptedPasswordConfa = this.encriptarConfa(encryptedPassword);
+  
+      this.authenticationService.inicioSesionSasParametros(this.username, encryptedPasswordConfa).subscribe(
+        (response: any) => {
+          const estado = response.estado;
+          const respuesta = response.respuesta;
+          const nombre = response.nombre;
+          const token = response.token;
+          this.nombreUsuario = response.usuarioIngreso;
+  
+          if (estado == 'Activo') {
+            this.utilitiesService.loading = false;
+            this.loginExitoso(token, nombre, this.nombreUsuario);
+            this.loginCompleted.emit();
+          } else {
+            this.utilitiesService.loading = false;
+            setTimeout(() => {
+              this.utilitiesService.showError('¡Ten presente!', respuesta);
+              $('.btn-modal-error').click();
+            }, 500);
+          }
+        }
+      );
+    }
   }
 
 }
