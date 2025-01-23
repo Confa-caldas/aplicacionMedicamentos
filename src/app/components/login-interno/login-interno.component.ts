@@ -28,6 +28,7 @@ export class LoginInternoComponent implements OnInit {
   nombreUsuario = '';
   username: string = '';
   password: string = '';
+  mostrarCamara = false;
 
   @Output() loginCompleted = new EventEmitter<void>();
 

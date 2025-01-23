@@ -20,7 +20,7 @@
             </button>
           </div>
         </div>
-        <button type="submit" class="btn btn-facial btn-block w-100 mb-3">
+        <button type="submit" class="btn btn-facial btn-block w-100 mb-3" (click)="iniciarSesion()">
           <i class="bi bi-box-arrow-in-right me-2"></i> Ingresar
         </button>
       </form>
@@ -62,7 +62,14 @@
 </div>
 
 <app-modal-content></app-modal-content>
-<app-login-interno #loginInterno (loginCompleted)="handleLoginSuccess()"></app-login-interno>
+
+<app-login-interno 
+  *ngIf="inicioSesion" 
+  #loginInterno 
+  (loginCompleted)="handleLoginSuccess()">
+</app-login-interno>
+
+
 
 
 <script>

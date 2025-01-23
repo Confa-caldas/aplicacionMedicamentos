@@ -22,6 +22,7 @@ export class WelcomeComponent {
   username: string = '';
   password: string = '';
   nombreUsuario = '';
+  inicioSesion = false;
 
   @ViewChild('loginInterno') loginInternoComponent!: LoginInternoComponent;
 
@@ -59,6 +60,10 @@ export class WelcomeComponent {
   
   handleLoginSuccess() {
     this.router.navigate(['/home']);
+  }
+
+  iniciarSesion(){
+    this.inicioSesion = true;
   }
 
 }
