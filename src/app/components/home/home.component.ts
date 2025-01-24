@@ -315,6 +315,7 @@ openAplicarModal(medicamento: any) {
 }
 
 openInsumosModal(insumos: any) {
+  this.utilitiesService.loading = true;
   let token = localStorage.getItem('authToken');
   let nombre2 = localStorage.getItem('nombreUsuario2');
   if(nombre2){
