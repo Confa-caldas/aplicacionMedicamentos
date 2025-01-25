@@ -1,27 +1,35 @@
-import { Component} from '@angular/core';
-import { LoadingComponent } from '../shared/loading/loading.component';
+import { Component, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ModalContentComponent } from '../modal-content/modal-content.component';
 import { LoginInternoComponent } from "../login-interno/login-interno.component";
-import { CameraComponent } from "../camera/camera.component";
 import { UtilitiesServiceService } from '../../services/utilities.service.service';
+import { FormsModule } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.css'],
   standalone: true,
-  imports: [LoadingComponent, CommonModule, RouterModule, ModalContentComponent, LoginInternoComponent, CameraComponent]
+  imports: [CommonModule, RouterModule, ModalContentComponent, LoginInternoComponent, FormsModule]
 })
 export class WelcomeComponent {
   bgimage: string = ".assets/img/bannerFormAppoiment.jpg";
-  loading: boolean = false;
-  public showWebcam = false;  
+  public showWebcam = false; 
+  showPassword: boolean = false;
+  username: string = '';
+  password: string = '';
+  nombreUsuario = '';
+  inicioSesion = false;
+
+  @ViewChild('loginInterno') loginInternoComponent!: LoginInternoComponent;
+
 
   constructor(
     private router: Router,
-    public utilitiesService: UtilitiesServiceService  
+    public utilitiesService: UtilitiesServiceService
   ) {}
 
   ngOnInit() {
@@ -39,5 +47,23 @@ export class WelcomeComponent {
   closeModalFacial() {
     this.showWebcam = false;
   }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
   
+  onLogin() {
+    if (this.loginInternoComponent) {
+      this.loginInternoComponent.onLogin(this.username, this.password);
+    }
+  }
+  
+  handleLoginSuccess() {
+    this.router.navigate(['/home']);
+  }
+
+  iniciarSesion(){
+    this.inicioSesion = true;
+  }
+
 }

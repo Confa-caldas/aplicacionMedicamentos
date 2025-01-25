@@ -39,7 +39,6 @@ export class AuthenticationService {
   }
 
   obtenerPaciente(documento: string, token: string){
-    console.log("tokennnn:  ",token);
     const url = environment.identificacionSas + 'metodo2';
     const body = {
       documento_paciente: documento
@@ -145,7 +144,6 @@ export class AuthenticationService {
         descontar_orden: medicamento.descontarOrden
     };
 
-    console.log("json enviado: " , body)
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -170,10 +168,10 @@ export class AuthenticationService {
       cantidad_a_usar: insumos.cantidadAUsar ,
       cantidad_usado: insumos.cantidadUsado,
       estado_orden: insumos.estadoOrden,
-      codigo_sab: codigoSab
+      codigo_sab: codigoSab,
+      secuencia_ordenamiento: insumos.secOrdenamiento,
+      num_item: insumos.numItem
     };
-
-    console.log("json enviado insumos: " , body)
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -213,4 +211,16 @@ export class AuthenticationService {
     let response = this.http.post(url, body, httpOptions);
     return response;
   }
+
+  inicioSesionSasParametros(param1: string, param2: string) {
+    const url = environment.identificacionSas + 'metodo9';
+    const body = {
+      parametro1: param1,
+      parametro2: param2
+    };
+
+    let response = this.http.post(url, body);    
+    return response;
+  }
+
 }

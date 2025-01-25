@@ -84,7 +84,6 @@ export class CameraComponent implements OnInit {
         this.deviceId = stream.getVideoTracks()[0].getSettings().deviceId || '';
       })
       .catch(err => {
-        console.error('No se pudo acceder a la cámara: ', err);
         const error: WebcamInitError = {
           message: 'No se pudo acceder a la cámara. Asegúrate de que el navegador tiene permisos.',
           mediaStreamError: err

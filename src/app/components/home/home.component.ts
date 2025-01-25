@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit {
   modalExito = false;
   mensaje = ''
 
+  inputValueBoolean = false;
   inputValue!: string
   data = [];
   dataPlaneacion = [];
@@ -196,7 +197,10 @@ insumos = [
     nombreInsumo: 'ejemplo',
     cantidad: 16,
     cantidadUsado: 5,
-    cantidadAUsar: 11
+    cantidadAUsar: 11,
+    secuencia_ordenamiento: 0,
+    num_item:0
+
   }
 ];
 
@@ -228,6 +232,7 @@ datosSab = [
 noDatosSab = false;
 datosSabBoolean = false;
 selectedSab: any;
+btnRegrasarSabBolean = false;
 
 
 ngOnInit(): void {
@@ -244,14 +249,12 @@ ngOnInit(): void {
 
 obteberCuasaNoAplicacion(medicamento: any) {
   medicamento.nombreCausaNoAplicacion = this.causasNoAplicacion.find(causa => causa.id === medicamento.causaNoAplicacion)?.nombre;
-  console.log("id: ", medicamento.causaNoAplicacion , " nombre: ", medicamento.nombreCausaNoAplicacion);
 }
 
 toggleAplicar(medicamento: any) {
 
   medicamento.aplicar = true;
   medicamento.causaNoAplicacion = '';
-  console.log("medi toggle", medicamento)
   this.openAplicarModal(medicamento);
   
 }
@@ -279,7 +282,6 @@ openAplicarModalprueba() {
 
 openAplicarModal(medicamento: any) {
 
-  console.log(medicamento.indicacionEspecial)
   this.selectedMedicamentoModal.nombreMedicamento = medicamento.nombreMedicamento;
   this.selectedMedicamentoModal.dosis = medicamento.dosis;
   this.selectedMedicamentoModal.nombreUnidadAdministracion = medicamento.nombreUnidadAdministracion;
@@ -307,15 +309,13 @@ openAplicarModal(medicamento: any) {
   this.selectedMedicamentoModal.descontarOrden = true;
   this.selectedMedicamentoModal.observacionEnfermeria = medicamento.observacionEnfermeria;
     
-  console.log("medicamento modal aplicar ",this.selectedMedicamentoModal);  
 
   $('.btn-modal-aplicar').click();
  
 }
 
 openInsumosModal(insumos: any) {
-  console.log(insumos)
-
+  this.utilitiesService.loading = true;
   let token = localStorage.getItem('authToken');
   let nombre2 = localStorage.getItem('nombreUsuario2');
   if(nombre2){
@@ -325,7 +325,6 @@ openInsumosModal(insumos: any) {
     this.auth.guardarInsumo(token, this.admisionNumero, this.nombreUsuario, insumos, this.codigoSab).subscribe((response: any) => {
       if (response.estado == 'OK') {
         this.utilitiesService.loading = false;
-        console.log(response);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -359,15 +358,12 @@ openInsumosModal(insumos: any) {
 
 openVerAplicaciones(){
   let token = localStorage.getItem('authToken');
-  console.log("Token ver aplicaciones: ", token)
     if (token != null) {
       this.auth.obtenerAplicaciones(this.admisionNumero, token, this.selectedMedicamento.prefijo, this.selectedMedicamento.medicamento, this.codigoSab).subscribe((response: any) => {
         if (this.auth.esTokenValidoAplicaciones(response)) {
           this.utilitiesService.loading = false;
           this.dataVerAplicaciones = Object.values(response)
           this.aplicaciones = this.dataVerAplicaciones [0];
-          console.log("data ver aplicaciones: ",this.dataVerAplicaciones);
-          console.log("data ver aplicaciones llenada : ",this.aplicaciones);
         } else {
           this.utilitiesService.loading = false;
           this.utilitiesService.showError('Token inválido:', 'El token expiró, por favor inicia sesión nuevamente');
@@ -428,7 +424,6 @@ generarAplicacion() {
       this.auth.guardarAplicacion(token, this.admisionNumero, this.nombreUsuario, this.selectedMedicamentoModal, this.codigoSab).subscribe((response: any) => {
         if (response.estado == 'OK') {
           this.utilitiesService.loading = false;
-          console.log(response);
           Swal.fire({
             position: "center",
             icon: "success",
@@ -478,15 +473,24 @@ decrease(insumo: any) {
 }
 
 increaseMedicamentos(medicamento: any) {
-  if (medicamento.cantidadPorAplicacion < (medicamento.cantidadTotal - medicamento.cantidadAplicado - medicamento.cantidadNoAplicado)) {
+  if(medicamento.prefijo == 'PTR'){
     medicamento.cantidadPorAplicacion++;
+  }else{
+    if (medicamento.cantidadPorAplicacion < (medicamento.cantidadTotal - medicamento.cantidadAplicado - medicamento.cantidadNoAplicado)) {
+      medicamento.cantidadPorAplicacion++;
+    }
   }
 }
 
 decreaseMedicamentos(medicamento: any) {
-  if (medicamento.cantidadPorAplicacion > 0) {
+  if(medicamento.prefijo == 'PTR' && medicamento.cantidadPorAplicacion > 1){
     medicamento.cantidadPorAplicacion--;
+  }else{
+    if (medicamento.cantidadPorAplicacion > 0) {
+      medicamento.cantidadPorAplicacion--;
+    }
   }
+  
 }
 
 obtenerDatosPaciente(document:string){
@@ -499,7 +503,6 @@ obtenerDatosPaciente(document:string){
           this.utilitiesService.loading = false;
           this.data = Object.values(response)
           this.inputValue = ''
-          console.log(this.data);
           this.admisionNumero = this.data[9];
           this.llenarDatosPaciente();
           if(this.nombre != ''){
@@ -508,7 +511,6 @@ obtenerDatosPaciente(document:string){
                 this.utilitiesService.loading = false;
                 this.dataPlaneacion = Object.values(response)
                 this.inputValue = ''
-                console.log(this.dataPlaneacion);
                 this.llenarDatosPlaneacion();
                 this.mostrarDatosBasicos = true;
               } else {
@@ -552,6 +554,7 @@ obtenerDatosPaciente(document:string){
 
 activarScanner() {
   //this.utilitiesService.loading = true
+  this.inputValueBoolean = true;
   this.mostrarSelectSAB = false;
   this.mostrarCargarSAB = false;
   this.datosSabBoolean = false;
@@ -579,12 +582,11 @@ llenarDatosPaciente(){
   this.convenio = this.data[3] + "  " + this.data[1];
   this.plan = this.data[2];
   this.infdocumento = this.data[4];
-  this.insumos = this.data[13];
+  this.insumos = this.data[13]; 
   this.tipoNumeroDocumento = this.tipoDocumento + "  " + this.infdocumento;
   this.medicamentos = this.data[14];
   this.causasNoAplicacion = this.data[15];
 
-  console.log("medicamentos llenados: ",this.medicamentos);
 
 }
 
@@ -603,6 +605,7 @@ iniciarSesion() {
 }
 
 cargarSAB(){
+  this.inputValueBoolean = false;
   this.mostrarSelectSAB = true;
   this.utilitiesService.loading = true;
   let token = localStorage.getItem('authToken');
@@ -634,6 +637,7 @@ cargarSAB(){
 }
 
 onSabChange() {  
+  this.btnRegrasarSabBolean = true;
   if (this.selectedSab) {
     this.utilitiesService.loading = true;
     let token = localStorage.getItem('authToken');
@@ -642,11 +646,13 @@ onSabChange() {
         if (response !== 'No hay admisiones') {
           this.utilitiesService.loading = false;
           this.data = Object.values(response)
+          this.noDatosSab = false;
           this.datosSab = this.data;
           this.datosSabBoolean = true;
         }else{
           this.utilitiesService.loading = false;
           this.noDatosSab = true;
+          this.datosSab = [];
         }
       },
         (error) => {
@@ -673,7 +679,6 @@ obtenerDatosPacienteSAB(document:string){
           this.utilitiesService.loading = false;
           this.data = Object.values(response)
           this.inputValue = ''
-          console.log(this.data);
           this.admisionNumero = this.data[9];
           this.llenarDatosPaciente(); 
           this.auth.obtenerPlaneacion(this.admisionNumero, token, this.codigoSab).subscribe((response: any) => {
@@ -681,7 +686,6 @@ obtenerDatosPacienteSAB(document:string){
               this.utilitiesService.loading = false;
               this.dataPlaneacion = Object.values(response)
               this.inputValue = ''
-              console.log(this.dataPlaneacion);
               this.llenarDatosPlaneacion();
             } 
           },
@@ -711,10 +715,15 @@ obtenerDatosPacienteSAB(document:string){
 }
 
 verMedicamentos(documento: string) {
-  console.log("abrir pdf")
   this.obtenerDatosPacienteSAB(documento);
   $('.btn-modal-medicamentos').click();
 }
 
+
+regrasarASAB(){
+  this.cargarSAB();
+  this.onSabChange();
+  this.mostrarDatosBasicos=false;
+}
 
 }
