@@ -121,7 +121,8 @@ export class HomeComponent implements OnInit {
     unidadAdministracion: '',
     viaAdministracion: '',
     nombreCausaNoAplicacion:'',
-    descontarOrden: true
+    descontarOrden: true,
+    campo10Audifarma: ''
 };
 selectedMedicamentoPlaneacion: any;
 admisionNumero = '';
@@ -188,7 +189,8 @@ medicamentos = [
     prefijo: '',
     secOrdenamiento: '',
     unidadAdministracion: '',
-    viaAdministracion: ''
+    viaAdministracion: '',
+    campo10Audifarma:''
   }
 ];
 
@@ -199,8 +201,9 @@ insumos = [
     cantidadUsado: 5,
     cantidadAUsar: 11,
     secuencia_ordenamiento: 0,
-    num_item:0
-
+    num_item:0,
+    idOrden: '',
+    campo10Audifarma:''
   }
 ];
 
@@ -308,6 +311,7 @@ openAplicarModal(medicamento: any) {
   this.selectedMedicamentoModal.horaPlaneadaAplicacion = medicamento.horaPlaneadaAplicacion;
   this.selectedMedicamentoModal.descontarOrden = true;
   this.selectedMedicamentoModal.observacionEnfermeria = medicamento.observacionEnfermeria;
+  this.selectedMedicamentoModal.campo10Audifarma = medicamento.campo10Audifarma;
     
 
   $('.btn-modal-aplicar').click();
@@ -323,6 +327,7 @@ openInsumosModal(insumos: any) {
   }
   if (token != null) {
     this.auth.guardarInsumo(token, this.admisionNumero, this.nombreUsuario, insumos, this.codigoSab).subscribe((response: any) => {
+      console.log(response);
       if (response.estado == 'OK') {
         this.utilitiesService.loading = false;
         Swal.fire({
@@ -333,27 +338,41 @@ openInsumosModal(insumos: any) {
           timer: 1500
         });
         this.obtenerDatosPaciente(this.infdocumento);
-      } else {
+      }else {
         this.utilitiesService.loading = false;
-        this.utilitiesService.showError('No se pudo guardar el insumo:', response.mensaje);
-        $('.btn-modal-error').click();
-      }
+        Swal.fire({
+          position: "center",
+          icon: "error", 
+          title: 'No se pudo guardar el insumo:', 
+          text: response.mensaje, 
+          showConfirmButton: false,
+          timer: 1500
+        });        
+      } 
     },
       (error) => {
         this.utilitiesService.loading = false;
-        this.utilitiesService.showError('Error en la llamada al servicio:', error);
-        $('.btn-modal-error').click();
+        Swal.fire({
+          position: "center",
+          icon: "error", 
+          title: 'Error en la llamada al servicio:', 
+          text: error, 
+          showConfirmButton: false,
+          timer: 1500
+        }); 
       })
   } else {
     this.utilitiesService.loading = false;
-    this.utilitiesService.showError('Token inválido:', 'El token expiró, por favor inicia sesión nuevamente');
-    $('.btn-modal-error').click();
+    Swal.fire({
+      position: "center",
+      icon: "error", 
+      title: 'Token inválido:', 
+      text: 'El token expiró, por favor inicia sesión nuevamente', 
+      showConfirmButton: false,
+      timer: 1500
+    }); 
     this.iniciarSesion();
   }
-
-
-
-  $('.btn-modal-insumos').click();
 }
 
 openVerAplicaciones(){

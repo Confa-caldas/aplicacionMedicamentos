@@ -141,7 +141,8 @@ export class AuthenticationService {
         horaPlaneadaAplicacion: medicamento.horaPlaneadaAplicacion,
         codigo_sab: codigoSab,
         nombre_indicacion_especial: medicamento.nombreIndicacionEspecial,
-        descontar_orden: medicamento.descontarOrden
+        descontar_orden: medicamento.descontarOrden,
+        campo_10: medicamento.campo10Audifarma
     };
 
 
@@ -170,7 +171,9 @@ export class AuthenticationService {
       estado_orden: insumos.estadoOrden,
       codigo_sab: codigoSab,
       secuencia_ordenamiento: insumos.secOrdenamiento,
-      num_item: insumos.numItem
+      num_item: insumos.numItem,
+      id_orden: insumos.idOrden,
+      campo_10: insumos.campo10Audifarma
     };
 
     const httpOptions = {
