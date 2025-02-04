@@ -1,26 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-dark navbar-welcome" 
-     style="background-image: url('assets/img/banner-blue.jpg'); background-size: cover; height: 90px;">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-        <!-- Logo -->
-        <a class="navbar-brand">
-            <img src="assets/img/logo.png" width="100px" alt="Logo">
-        </a>
-        
-        <h1 class="text-primary mb-3" style="color: #f80d0d !important">Ambiente de Pruebas</h1>
+<nav
+  class="navbar navbar-expand-lg navbar-dark navbar-welcome"
+  style="
+    background-image: url('assets/img/banner-blue.jpg');
+    background-size: cover;
+    height: 90px;
+  "
+>
+  <div
+    class="container-fluid d-flex justify-content-between align-items-center"
+  >
+    <!-- Logo -->
+    <a class="navbar-brand">
+      <img src="assets/img/logo.png" width="100px" alt="Logo" />
+    </a>
 
-        <!-- Verificación de usuario logueado -->
-        <div *ngIf="nombreUsuario != ''" class="dropdown">
-            <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ nombreUsuario }} >
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" style="background-color: transparent; border: none;" aria-labelledby="userDropdown">
-                <li><button class="btn btn-warning" (click)="logout()">Cerrar sesión</button></li>
-            </ul>
-        </div>
+    <!-- <h1 class="text-primary mb-3" style="color: #f80d0d !important">Ambiente de Pruebas</h1> -->
+
+    <!-- Verificación de usuario logueado -->
+    <div *ngIf="nombreUsuario != ''" class="dropdown">
+      <a
+        class="nav-link dropdown-toggle text-white"
+        href="#"
+        id="userDropdown"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ nombreUsuario }} >
+      </a>
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        style="background-color: transparent; border: none"
+        aria-labelledby="userDropdown"
+      >
+        <li>
+          <button class="btn btn-warning" (click)="logout()">
+            Cerrar sesión
+          </button>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
-
-
-
-
-
