@@ -26,7 +26,7 @@ export class AuthenticationService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'x-api-key': 'qfdmzeFdxN2VetG1dYgRB4jLrxHrLTveaxss0aMH',
+      'x-api-key': 'zriVMhGZHZ5mK4pXLgol5ajIxt5w8Um760Ce5W4m',
     });
     const url = environment.consultaLambdaDirecta;
     return this.http.post(url, body, { headers });
