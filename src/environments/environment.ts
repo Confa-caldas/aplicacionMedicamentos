@@ -8,7 +8,7 @@ export const environment = {
     'https://identidad.confa.co/transaccionAutenticacionWS/',
   consultarIp: 'https://appint.confa.co/consultaIP/circular007/obtenerIP/',
   consultaLambdaDirecta: 'https://api-facial.confa.co/identificarvalidar',
-  excepcionFacial: 'ojos-boca-dimension-gafasDeSol-brillo',
+  excepcionFacial: 'ojos-boca-dimension-gafasDeSol-brillo-lentesMedicados',
   tipoValidacionFacial: 'validacion',
   // identificacionSas: 'https://app.confa.co:8361/medicamentosWS/rest/medicamentos/', // ruta apuntando al nbappo
   //identificacionSas: 'http://localhost:8081/medicamentosWS/rest/medicamentos/',
