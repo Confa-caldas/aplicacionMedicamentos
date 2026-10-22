@@ -5,7 +5,6 @@ import { ModalContentComponent } from '../modal-content/modal-content.component'
 import { LoginInternoComponent } from "../login-interno/login-interno.component";
 import { UtilitiesServiceService } from '../../services/utilities.service.service';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../../environments/environment';
 
 
 
@@ -18,14 +17,12 @@ import { environment } from '../../../environments/environment';
 })
 export class WelcomeComponent {
   bgimage: string = ".assets/img/bannerFormAppoiment.jpg";
-  public showWebcam = false;
+  public showWebcam = false; 
   showPassword: boolean = false;
   username: string = '';
   password: string = '';
   nombreUsuario = '';
   inicioSesion = false;
-  /** Solo se muestra el letrero "Pruebas" cuando NO es el build de producción. */
-  mostrarAmbientePruebas: boolean = !environment.production;
 
   @ViewChild('loginInterno') loginInternoComponent!: LoginInternoComponent;
 
