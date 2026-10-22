@@ -6,7 +6,8 @@
             <img src="assets/img/logo.png" width="100px" alt="Logo">
         </a>
         
-        <!--<h1 class="text-primary mb-3" style="color: #f80d0d !important">Ambiente de Pruebas</h1>-->
+        <h1 *ngIf="mostrarAmbientePruebas" class="text-primary mb-3" style="color: #f80d0d !important">Ambiente de Pruebas</h1>
+
 <nav
   class="navbar navbar-expand-lg navbar-dark navbar-welcome"
   style="
@@ -18,10 +19,10 @@
   <div
     class="container-fluid d-flex justify-content-between align-items-center"
   >
-<!--
-    <h1 class="text-primary mb-3" style="color: #f80d0d !important">
+
+    <h1 *ngIf="mostrarAmbientePruebas" class="text-primary mb-3" style="color: #f80d0d !important">
       Ambiente de Pruebas
-    </h1>-->
+    </h1>
 
     <!-- Verificación de usuario logueado -->
     <div *ngIf="nombreUsuario != ''" class="dropdown">
