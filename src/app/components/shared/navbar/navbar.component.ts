@@ -3,6 +3,7 @@ import {UtilitiesServiceService} from '../../../services/utilities.service.servi
 import { WelcomeComponent } from '../../welcome/welcome.component';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,9 @@ export class NavbarComponent {
 
   public bgimage : String = "assets/img/bannerFormAppoiment.jpg";
   nombreUsuario: string | null = null;
-  isLoggedIn = false; 
+  isLoggedIn = false;
+  /** Solo se muestra el letrero "Ambiente de Pruebas" cuando NO es el build de producción. */
+  mostrarAmbientePruebas: boolean = !environment.production;
   constructor(
     private router: Router,
     public utilitiesService: UtilitiesServiceService,
