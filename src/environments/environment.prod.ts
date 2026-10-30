@@ -9,5 +9,5 @@ export const environment = {
   identificacionSas:'https://sasweb.confa.co:8586/medicamentosWS/rest/medicamentos/', // producción
   parametro1: 'hlZTM4ZDcwNDRlODcyNzZDX1BPUlQqMjAxOCQ=',
   parametro2: 'UG9ydGFsX0NvbmZhODRkZGZiMzQxMjZmYzNhND',
-  apiIngresoConfa: 'https://app.confa.co:8687/ingresoConfaWSSGC/rest/', //ruta de pruebas apuntando a genesys
+  apiIngresoConfa: '', //ruta de pruebas apuntando a genesys
 };
